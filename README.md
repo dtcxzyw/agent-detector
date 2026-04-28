@@ -102,6 +102,7 @@ Three tiers, checked in priority order:
 | Gemini CLI | gemini | AI_AGENT/AGENT | GEMINI_CLI |
 | GitHub Copilot | github-copilot | AI_AGENT/AGENT | COPILOT_MODEL, COPILOT_ALLOW_ALL, COPILOT_GITHUB_TOKEN |
 | Goose | goose | AI_AGENT/AGENT | GOOSE_TERMINAL |
+| Kimi CLI | kimi, kimi-cli | AI_AGENT/AGENT | — |
 | OpenClaw | — | AI_AGENT/AGENT | OPENCLAW_SHELL |
 | OpenCode | opencode | AI_AGENT/AGENT | OPENCODE_CLIENT |
 | Pi | — | AI_AGENT/AGENT | PI_CODING_AGENT |
