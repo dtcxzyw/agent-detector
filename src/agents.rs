@@ -12,6 +12,7 @@ pub static PARENT_PROCESS_NAMES: &[(&str, &str)] = &[
     ("gemini", "gemini"),
     ("github-copilot", "github-copilot"),
     ("goose", "goose"),
+    ("hermes", "hermes"),
     ("kimi", "kimi-cli"),
     ("kimi-cli", "kimi-cli"),
     ("opencode", "opencode"),
