@@ -1,5 +1,7 @@
 # agent-detector
 
+[![CI](https://github.com/dtcxzyw/agent-detector/actions/workflows/ci.yml/badge.svg)](https://github.com/dtcxzyw/agent-detector/actions/workflows/ci.yml)
+
 An agent detector for Rust CLI applications.
 
 ## Motivation
@@ -106,6 +108,14 @@ Three tiers, checked in priority order:
 | Roo Code | — | AI_AGENT/AGENT | ROO_ACTIVE |
 | TRAE AI | trae | AI_AGENT/AGENT | TRAE_AI_SHELL_ID |
 | Windsurf | windsurf | AI_AGENT/AGENT | — |
+
+## License
+
+MIT
+
+## Contributing
+
+Contributions are welcome. Please ensure `pre-commit install` is run and all hooks pass before submitting a PR.
 
 ## Inspired by
 
