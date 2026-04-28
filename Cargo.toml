@@ -23,3 +23,6 @@ expect_used = "deny"
 dbg_macro = "deny"
 todo = "deny"
 unimplemented = "deny"
+
+[lints.rust]
+missing_docs = "deny"

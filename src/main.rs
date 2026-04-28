@@ -1,3 +1,6 @@
+//! Prints the detected AI coding agent name and exits 0.
+//! Exits 1 if no agent is detected.
+
 use agent_detector::agent_name;
 
 fn main() {

@@ -1,23 +1,51 @@
+//! Detects whether the current process is being invoked by an AI coding agent.
+//!
+//! Detection is performed in three tiers:
+//! 1. Parent process tree matching (requires `process-tree` feature)
+//! 2. `AI_AGENT` / `AGENT` standard environment variables
+//! 3. Tool-specific environment variables
+//!
+//! # Example
+//!
+//! ```rust
+//! use agent_detector::is_agent;
+//!
+//! if is_agent() {
+//!     eprintln!("Running under an AI agent");
+//! }
+//! ```
+
 use std::env;
 
 mod agents;
 #[cfg(feature = "process-tree")]
 mod process;
 
+/// Information about the detected agent.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AgentInfo {
+    /// The agent name (e.g. `"opencode"`, `"claude-code"`).
+    /// For unknown `AI_AGENT` / `AGENT` values, this is the literal value.
     pub name: String,
+    /// How the agent was detected.
     pub source: DetectionSource,
 }
 
+/// Indicates which detection tier produced the result.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DetectionSource {
+    /// Detected via parent process tree walking.
     #[cfg(feature = "process-tree")]
     ParentProcess,
+    /// Detected via `AI_AGENT` or `AGENT` standard environment variable.
     StandardEnvVar,
+    /// Detected via a tool-specific environment variable.
     ToolEnvVar,
 }
 
+/// Run full agent detection (L1 → L2 → L3).
+///
+/// Returns `None` if no agent is detected.
 #[must_use]
 pub fn detect() -> Option<AgentInfo> {
     #[cfg(feature = "process-tree")]
@@ -39,11 +67,13 @@ pub fn detect() -> Option<AgentInfo> {
     None
 }
 
+/// Returns `true` if the current process is running under an AI agent.
 #[must_use]
 pub fn is_agent() -> bool {
     detect().is_some()
 }
 
+/// Returns the detected agent name, or `None` if no agent is detected.
 #[must_use]
 pub fn agent_name() -> Option<String> {
     detect().map(|info| info.name)
