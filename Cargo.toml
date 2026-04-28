@@ -8,5 +8,9 @@ license = "MIT"
 name = "whichagent"
 path = "src/main.rs"
 
+[features]
+default = ["process-tree"]
+process-tree = ["dep:sysinfo"]
+
 [dependencies]
-sysinfo = "0.38"
+sysinfo = { version = "0.38", optional = true }

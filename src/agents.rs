@@ -1,3 +1,4 @@
+#[cfg(feature = "process-tree")]
 pub static PARENT_PROCESS_NAMES: &[(&str, &str)] = &[
     ("amp", "amp"),
     ("antigravity", "antigravity"),

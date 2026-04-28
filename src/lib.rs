@@ -1,6 +1,7 @@
 use std::env;
 
 mod agents;
+#[cfg(feature = "process-tree")]
 mod process;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -11,12 +12,14 @@ pub struct AgentInfo {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DetectionSource {
+    #[cfg(feature = "process-tree")]
     ParentProcess,
     StandardEnvVar,
     ToolEnvVar,
 }
 
 pub fn detect() -> Option<AgentInfo> {
+    #[cfg(feature = "process-tree")]
     if let Some(name) = process::find_agent_in_parent_tree() {
         return Some(AgentInfo {
             name,
@@ -110,6 +113,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "process-tree")]
     fn test_detect_in_parent_process() {
         let result = detect();
         assert!(result.is_some());
@@ -117,6 +121,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "process-tree")]
     fn test_is_agent_true() {
         assert!(is_agent());
     }
