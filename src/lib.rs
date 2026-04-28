@@ -146,17 +146,30 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "process-tree")]
-    fn test_detect_in_parent_process() {
+    fn test_detect_with_env_var() {
+        unsafe { set_env("OPENCODE_CLIENT", "1") };
         let result = detect();
+        unsafe { remove_env("OPENCODE_CLIENT") };
+
         assert!(result.is_some());
-        assert_eq!(result.unwrap().source, DetectionSource::ParentProcess);
+        let info = result.unwrap();
+        assert_eq!(info.name, "opencode");
     }
 
     #[test]
-    #[cfg(feature = "process-tree")]
-    fn test_is_agent_true() {
+    fn test_is_agent_with_env_var() {
+        unsafe { set_env("CLAUDECODE", "1") };
         assert!(is_agent());
+        unsafe { remove_env("CLAUDECODE") };
+    }
+
+    #[test]
+    fn test_agent_name_with_env_var() {
+        unsafe { set_env("AI_AGENT", "test-bot") };
+        let result = check_standard_env_vars();
+        unsafe { remove_env("AI_AGENT") };
+
+        assert_eq!(result.unwrap().name, "test-bot");
     }
 
     #[test]
@@ -278,11 +291,5 @@ mod tests {
     fn test_check_tool_env_var_none() {
         let result = check_tool_env_vars();
         assert!(result.is_none());
-    }
-
-    #[test]
-    fn test_agent_name() {
-        let name = agent_name();
-        assert!(name.is_some());
     }
 }
