@@ -92,6 +92,7 @@ Three tiers, checked in priority order:
 | Aider | aider | AI_AGENT/AGENT | — |
 | Antigravity | amp | AI_AGENT/AGENT | ANTIGRAVITY_AGENT |
 | Augment CLI | augment-cli | AI_AGENT/AGENT | AUGMENT_AGENT |
+| Carapace | carapace | — | — |
 | Claude Code | claude | AI_AGENT/AGENT | CLAUDECODE, CLAUDE_CODE |
 | CodeBuddy | codebuddy | — | — |
 | Cline | — | AI_AGENT/AGENT | CLINE_ACTIVE |
@@ -102,16 +103,25 @@ Three tiers, checked in priority order:
 | Devin | devin | AI_AGENT/AGENT | — |
 | Gemini CLI | gemini | AI_AGENT/AGENT | GEMINI_CLI |
 | GitHub Copilot | github-copilot | AI_AGENT/AGENT | COPILOT_MODEL, COPILOT_ALLOW_ALL, COPILOT_GITHUB_TOKEN |
+| Gloamy | gloamy | — | — |
 | Goose | goose | AI_AGENT/AGENT | GOOSE_TERMINAL |
 | Hermes Agent | hermes | AI_AGENT/AGENT | — |
+| IronClaw | ironclaw | — | — |
 | Kimi CLI | kimi, kimi-cli | AI_AGENT/AGENT | — |
+| Loong | loong | — | — |
+| MicroClaw | microclaw | — | — |
+| Moltis | moltis | — | — |
+| Nanobot | nanobot | — | — |
+| NanoClaw | nanoclaw | — | — |
 | OpenClaw | — | AI_AGENT/AGENT | OPENCLAW_SHELL |
 | OpenCode | opencode | AI_AGENT/AGENT | OPENCODE_CLIENT |
 | Pi | — | AI_AGENT/AGENT | PI_CODING_AGENT |
+| PicoClaw | picoclaw | — | — |
 | Replit | — | AI_AGENT/AGENT | REPL_ID |
 | Roo Code | — | AI_AGENT/AGENT | ROO_ACTIVE |
 | TRAE AI | trae | AI_AGENT/AGENT | TRAE_AI_SHELL_ID |
 | Windsurf | windsurf | AI_AGENT/AGENT | — |
+| ZeroClaw | zeroclaw | — | — |
 
 ## License
 
