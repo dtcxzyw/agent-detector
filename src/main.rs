@@ -1,9 +1,8 @@
-use agent_detector::{detect, is_agent};
+use agent_detector::agent_name;
 
 fn main() {
-    if is_agent() {
-        let info = detect().unwrap();
-        println!("{}", info.name);
+    if let Some(name) = agent_name() {
+        println!("{name}");
     } else {
         std::process::exit(1);
     }
