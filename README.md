@@ -112,7 +112,6 @@ Three tiers, checked in priority order:
 | MicroClaw | microclaw | — | — |
 | Moltis | moltis | — | — |
 | Nanobot | nanobot | — | — |
-| NanoClaw | nanoclaw | — | — |
 | OpenClaw | — | AI_AGENT/AGENT | OPENCLAW_SHELL |
 | OpenCode | opencode | AI_AGENT/AGENT | OPENCODE_CLIENT |
 | Pi | — | AI_AGENT/AGENT | PI_CODING_AGENT |

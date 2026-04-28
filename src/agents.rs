@@ -22,7 +22,6 @@ pub static PARENT_PROCESS_NAMES: &[(&str, &str)] = &[
     ("microclaw", "microclaw"),
     ("moltis", "moltis"),
     ("nanobot", "nanobot"),
-    ("nanoclaw", "nanoclaw"),
     ("opencode", "opencode"),
     ("picoclaw", "picoclaw"),
     ("trae", "trae"),
