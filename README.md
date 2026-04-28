@@ -1,6 +1,7 @@
 # agent-detector
 
 [![CI](https://github.com/dtcxzyw/agent-detector/actions/workflows/ci.yml/badge.svg)](https://github.com/dtcxzyw/agent-detector/actions/workflows/ci.yml)
+[![Crates.io](https://img.shields.io/crates/v/agent-detector)](https://crates.io/crates/agent-detector)
 
 An agent detector for Rust CLI applications.
 
