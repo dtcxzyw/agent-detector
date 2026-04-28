@@ -89,6 +89,7 @@ Three tiers, checked in priority order:
 
 | Agent | L1 (Process) | L2 (Standard) | L3 (Tool Env Var) |
 |-------|:---:|:---:|:---|
+| Aider | aider | AI_AGENT/AGENT | — |
 | Antigravity | amp | AI_AGENT/AGENT | ANTIGRAVITY_AGENT |
 | Augment CLI | augment-cli | AI_AGENT/AGENT | AUGMENT_AGENT |
 | Claude Code | claude | AI_AGENT/AGENT | CLAUDECODE, CLAUDE_CODE |
