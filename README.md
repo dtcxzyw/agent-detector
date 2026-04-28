@@ -111,11 +111,19 @@ Three tiers, checked in priority order:
 
 ## License
 
-MIT
+Licensed under the [MIT License](LICENSE).
 
 ## Contributing
 
-Contributions are welcome. Please ensure `pre-commit install` is run and all hooks pass before submitting a PR.
+Contributions are welcome. Please ensure `pre-commit install` is run and
+all hooks pass before submitting a PR.
+
+To add support for a new agent:
+1. Add the agent to `src/agents.rs` — env vars in `TOOL_AGENTS` and/or
+   process name in `PARENT_PROCESS_NAMES`.
+2. Add a test in `src/lib.rs` verifying the new detection logic.
+3. Update the Supported Agents table in this README.
+4. Run `cargo clippy && cargo test && cargo test --no-default-features`.
 
 ## Inspired by
 
