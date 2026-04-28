@@ -43,7 +43,7 @@ pub fn agent_name() -> Option<String> {
     detect().map(|info| info.name)
 }
 
-pub fn check_standard_env_vars() -> Option<AgentInfo> {
+fn check_standard_env_vars() -> Option<AgentInfo> {
     const STANDARD_VARS: &[&str] = &["AI_AGENT", "AGENT"];
 
     for &var in STANDARD_VARS {
@@ -61,7 +61,7 @@ pub fn check_standard_env_vars() -> Option<AgentInfo> {
     None
 }
 
-pub fn check_tool_env_vars() -> Option<AgentInfo> {
+fn check_tool_env_vars() -> Option<AgentInfo> {
     let cowork = check_cowork();
     if let Some(info) = cowork {
         return Some(info);
