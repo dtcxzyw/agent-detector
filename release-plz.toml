@@ -1,4 +1,2 @@
 [workspace]
 release_always = false
-
-[changelog]
