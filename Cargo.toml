@@ -3,6 +3,12 @@ name = "agent-detector"
 version = "0.1.0"
 edition = "2024"
 license = "MIT"
+description = "Detect whether an AI coding agent is the caller, enabling automatic agent-friendly output for Rust CLI applications."
+homepage = "https://github.com/dtcxzyw/agent-detector"
+repository = "https://github.com/dtcxzyw/agent-detector"
+readme = "README.md"
+keywords = ["agent", "cli", "detection", "ai", "coding-assistant"]
+categories = ["command-line-interface", "development-tools"]
 
 [[bin]]
 name = "whichagent"
