@@ -15,33 +15,12 @@ formats.
 
 ## Installation
 
-Add to `Cargo.toml`:
-
 ```toml
 [dependencies]
 agent-detector = "0.1"
 ```
 
-Or install the CLI:
-
-```bash
-cargo install agent-detector
-whichagent
-```
-
 ## Usage
-
-### CLI
-
-```bash
-$ whichagent
-opencode
-
-$ whichagent && echo "detected" || echo "not detected"
-detected
-```
-
-### Library
 
 ```rust
 use agent_detector::{detect, is_agent, agent_name};
@@ -58,6 +37,19 @@ if let Some(info) = detect() {
 
 // Just the name
 let name = agent_name(); // Option<String>
+```
+
+## CLI
+
+A `whichagent` binary is also included:
+
+```bash
+$ cargo install agent-detector
+$ whichagent
+opencode
+
+$ whichagent && echo "detected" || echo "not detected"
+detected
 ```
 
 ## API
