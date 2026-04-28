@@ -93,6 +93,7 @@ Three tiers, checked in priority order:
 | Antigravity | amp | AI_AGENT/AGENT | ANTIGRAVITY_AGENT |
 | Augment CLI | augment-cli | AI_AGENT/AGENT | AUGMENT_AGENT |
 | Claude Code | claude | AI_AGENT/AGENT | CLAUDECODE, CLAUDE_CODE |
+| CodeBuddy | codebuddy | — | — |
 | Cline | — | AI_AGENT/AGENT | CLINE_ACTIVE |
 | Codex CLI | codex | AI_AGENT/AGENT | CODEX_SANDBOX, CODEX_CI, CODEX_THREAD_ID |
 | Cowork | — | AI_AGENT/AGENT | CLAUDE_CODE_IS_COWORK + (CLAUDECODE\|CLAUDE_CODE) |

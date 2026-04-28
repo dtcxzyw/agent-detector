@@ -5,6 +5,7 @@ pub static PARENT_PROCESS_NAMES: &[(&str, &str)] = &[
     ("antigravity", "antigravity"),
     ("augment-cli", "augment-cli"),
     ("claude", "claude-code"),
+    ("codebuddy", "codebuddy"),
     ("codex", "codex"),
     ("cursor", "cursor"),
     ("devin", "devin"),
