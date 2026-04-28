@@ -4,5 +4,9 @@ version = "0.1.0"
 edition = "2024"
 license = "MIT"
 
+[[bin]]
+name = "whichagent"
+path = "src/main.rs"
+
 [dependencies]
 sysinfo = "0.38"
