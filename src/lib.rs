@@ -18,6 +18,7 @@ pub enum DetectionSource {
     ToolEnvVar,
 }
 
+#[must_use]
 pub fn detect() -> Option<AgentInfo> {
     #[cfg(feature = "process-tree")]
     if let Some(name) = process::find_agent_in_parent_tree() {
@@ -38,10 +39,12 @@ pub fn detect() -> Option<AgentInfo> {
     None
 }
 
+#[must_use]
 pub fn is_agent() -> bool {
     detect().is_some()
 }
 
+#[must_use]
 pub fn agent_name() -> Option<String> {
     detect().map(|info| info.name)
 }

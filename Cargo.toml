@@ -14,3 +14,12 @@ process-tree = ["dep:sysinfo"]
 
 [dependencies]
 sysinfo = { version = "0.38", optional = true }
+
+[lints.clippy]
+all = "deny"
+pedantic = "deny"
+unwrap_used = "deny"
+expect_used = "deny"
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"
