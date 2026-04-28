@@ -92,7 +92,7 @@ Three tiers, checked in priority order:
 | Aider | aider | AI_AGENT/AGENT | — |
 | Antigravity | amp | AI_AGENT/AGENT | ANTIGRAVITY_AGENT |
 | Augment CLI | augment-cli | AI_AGENT/AGENT | AUGMENT_AGENT |
-| Carapace | carapace | — | — |
+| Carapace | cara | — | — |
 | Claude Code | claude | AI_AGENT/AGENT | CLAUDECODE, CLAUDE_CODE |
 | CodeBuddy | codebuddy | — | — |
 | Cline | — | AI_AGENT/AGENT | CLINE_ACTIVE |

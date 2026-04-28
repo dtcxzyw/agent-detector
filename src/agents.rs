@@ -4,7 +4,7 @@ pub static PARENT_PROCESS_NAMES: &[(&str, &str)] = &[
     ("amp", "amp"),
     ("antigravity", "antigravity"),
     ("augment-cli", "augment-cli"),
-    ("carapace", "carapace"),
+    ("cara", "carapace"),
     ("claude", "claude-code"),
     ("codebuddy", "codebuddy"),
     ("codex", "codex"),
