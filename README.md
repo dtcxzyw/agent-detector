@@ -89,40 +89,40 @@ Three tiers, checked in priority order:
 
 ## Supported Agents
 
-| Agent | L1 (Process) | L2 (Standard) | L3 (Tool Env Var) |
-|-------|:---:|:---:|:---|
-| Aider | aider | AI_AGENT/AGENT | — |
-| Antigravity | amp | AI_AGENT/AGENT | ANTIGRAVITY_AGENT |
-| Augment CLI | augment-cli | AI_AGENT/AGENT | AUGMENT_AGENT |
-| Carapace | cara | — | — |
-| Claude Code | claude | AI_AGENT/AGENT | CLAUDECODE, CLAUDE_CODE |
-| CodeBuddy | codebuddy | — | — |
-| Cline | — | AI_AGENT/AGENT | CLINE_ACTIVE |
-| Codex CLI | codex | AI_AGENT/AGENT | CODEX_SANDBOX, CODEX_CI, CODEX_THREAD_ID |
-| Cowork | — | AI_AGENT/AGENT | CLAUDE_CODE_IS_COWORK + (CLAUDECODE\|CLAUDE_CODE) |
-| Cursor | cursor | AI_AGENT/AGENT | CURSOR_TRACE_ID |
-| Cursor CLI | — | AI_AGENT/AGENT | CURSOR_AGENT, CURSOR_EXTENSION_HOST_ROLE |
-| Devin | devin | AI_AGENT/AGENT | — |
-| Gemini CLI | gemini | AI_AGENT/AGENT | GEMINI_CLI |
-| GitHub Copilot | github-copilot | AI_AGENT/AGENT | COPILOT_MODEL, COPILOT_ALLOW_ALL, COPILOT_GITHUB_TOKEN |
-| Gloamy | gloamy | — | — |
-| Goose | goose | AI_AGENT/AGENT | GOOSE_TERMINAL |
-| Hermes Agent | hermes | AI_AGENT/AGENT | — |
-| IronClaw | ironclaw | — | — |
-| Kimi CLI | kimi, kimi-cli | AI_AGENT/AGENT | — |
-| Loong | loong | — | — |
-| MicroClaw | microclaw | — | — |
-| Moltis | moltis | — | — |
-| Nanobot | nanobot | — | — |
-| OpenClaw | — | AI_AGENT/AGENT | OPENCLAW_SHELL |
-| OpenCode | opencode | AI_AGENT/AGENT | OPENCODE_CLIENT |
-| Pi | — | AI_AGENT/AGENT | PI_CODING_AGENT |
-| PicoClaw | picoclaw | — | — |
-| Replit | — | AI_AGENT/AGENT | REPL_ID |
-| Roo Code | — | AI_AGENT/AGENT | ROO_ACTIVE |
-| TRAE AI | trae | AI_AGENT/AGENT | TRAE_AI_SHELL_ID |
-| Windsurf | windsurf | AI_AGENT/AGENT | — |
-| ZeroClaw | zeroclaw | — | — |
+| Agent | L1 (Process) | L3 (Tool Env Var) |
+|-------|:---:|:---|
+| Aider | aider | — |
+| Antigravity | amp | ANTIGRAVITY_AGENT |
+| Augment CLI | augment-cli | AUGMENT_AGENT |
+| Carapace | cara | — |
+| Claude Code | claude | CLAUDECODE, CLAUDE_CODE |
+| CodeBuddy | codebuddy | — |
+| Cline | — | CLINE_ACTIVE |
+| Codex CLI | codex | CODEX_SANDBOX, CODEX_CI, CODEX_THREAD_ID |
+| Cowork | — | CLAUDE_CODE_IS_COWORK + (CLAUDECODE\|CLAUDE_CODE) |
+| Cursor | cursor | CURSOR_TRACE_ID |
+| Cursor CLI | — | CURSOR_AGENT, CURSOR_EXTENSION_HOST_ROLE |
+| Devin | devin | — |
+| Gemini CLI | gemini | GEMINI_CLI |
+| GitHub Copilot | github-copilot | COPILOT_MODEL, COPILOT_ALLOW_ALL, COPILOT_GITHUB_TOKEN |
+| Gloamy | gloamy | — |
+| Goose | goose | GOOSE_TERMINAL |
+| Hermes Agent | hermes | — |
+| IronClaw | ironclaw | — |
+| Kimi CLI | kimi, kimi-cli | — |
+| Loong | loong | — |
+| MicroClaw | microclaw | — |
+| Moltis | moltis | — |
+| Nanobot | nanobot | — |
+| OpenClaw | — | OPENCLAW_SHELL |
+| OpenCode | opencode | OPENCODE_CLIENT |
+| Pi | — | PI_CODING_AGENT |
+| PicoClaw | picoclaw | — |
+| Replit | — | REPL_ID |
+| Roo Code | — | ROO_ACTIVE |
+| TRAE AI | trae | TRAE_AI_SHELL_ID |
+| Windsurf | windsurf | — |
+| ZeroClaw | zeroclaw | — |
 
 ## License
 
