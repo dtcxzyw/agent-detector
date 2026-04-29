@@ -67,7 +67,7 @@ pub struct AgentInfo {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DetectionSource {
-    ParentProcess,    // detected via parent process tree
+    ParentProcess,    // detected via parent process tree (requires `process-tree` feature, enabled by default)
     StandardEnvVar,   // detected via AI_AGENT / AGENT
     ToolEnvVar,       // detected via tool-specific env var
 }

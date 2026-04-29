@@ -10,6 +10,9 @@ pub(crate) struct AgentEntry {
     pub env_vars: &'static [&'static str],
 }
 
+// Order determines L3 priority: earlier entries are checked first.
+// Agents with overlapping env vars are not expected in practice; if they
+// occur, the first match wins.
 pub(crate) static AGENTS: &[AgentEntry] = &[
     AgentEntry {
         name: "cursor",

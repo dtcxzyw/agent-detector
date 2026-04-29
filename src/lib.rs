@@ -91,6 +91,7 @@ fn check_standard_env_vars() -> Option<AgentInfo> {
 
     for &var in STANDARD_VARS {
         if let Ok(value) = env::var(var) {
+            // Agent names are ASCII; `to_ascii_lowercase` is sufficient.
             let value = value.trim().to_ascii_lowercase();
             if !value.is_empty() {
                 return Some(AgentInfo {
@@ -105,7 +106,7 @@ fn check_standard_env_vars() -> Option<AgentInfo> {
 }
 
 fn is_cowork_override() -> bool {
-    env::var("CLAUDE_CODE_IS_COWORK").is_ok_and(|v| !v.is_empty())
+    env::var("CLAUDE_CODE_IS_COWORK").is_ok_and(|v| !v.trim().is_empty())
 }
 
 fn check_tool_env_vars() -> Option<AgentInfo> {
@@ -130,10 +131,12 @@ fn check_tool_env_vars() -> Option<AgentInfo> {
 }
 
 fn env_var_is_set(var: &str) -> bool {
+    // Case-sensitive comparison is intentional: Cursor controls this value and
+    // always emits lowercase `agent-exec`.
     if var == "CURSOR_EXTENSION_HOST_ROLE" {
-        env::var(var).is_ok_and(|v| v == "agent-exec")
+        env::var(var).is_ok_and(|v| v.trim() == "agent-exec")
     } else {
-        env::var(var).is_ok_and(|v| !v.is_empty())
+        env::var(var).is_ok_and(|v| !v.trim().is_empty())
     }
 }
 
