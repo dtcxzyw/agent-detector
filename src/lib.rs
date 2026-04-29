@@ -24,8 +24,8 @@ mod process;
 /// Information about the detected agent.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AgentInfo {
-    /// The agent name (e.g. `"opencode"`, `"claude-code"`).
-    /// For unknown `AI_AGENT` / `AGENT` values, this is the literal value.
+    /// The agent name (e.g. `"opencode"`, `"claude-code"`), always lowercase.
+    /// For unknown `AI_AGENT` / `AGENT` values, this is the lowercased literal value.
     pub name: String,
     /// How the agent was detected.
     pub source: DetectionSource,
@@ -73,7 +73,7 @@ pub fn is_agent() -> bool {
     detect().is_some()
 }
 
-/// Returns the detected agent name, or `None` if no agent is detected.
+/// Returns the detected agent name (always lowercase), or `None` if no agent is detected.
 #[must_use]
 pub fn agent_name() -> Option<String> {
     detect().map(|info| info.name)

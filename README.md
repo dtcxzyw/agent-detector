@@ -83,7 +83,7 @@ Three tiers, checked in priority order:
 
 1. **Parent process tree** — walks ancestor processes, matches known agent binary names. Most accurate, especially for agent-calling-agent scenarios.
 
-2. **`AI_AGENT` / `AGENT`** — standard environment variables (per [agents.md #136](https://github.com/agentsmd/agents.md/issues/136)). The value is used as-is; unknown values are still treated as agent detections.
+2. **`AI_AGENT` / `AGENT`** — standard environment variables (per [agents.md #136](https://github.com/agentsmd/agents.md/issues/136)). The value is lowercased; unknown values are still treated as agent detections.
 
 3. **Tool-specific env vars** — checks for environment variables set by specific agents.
 
