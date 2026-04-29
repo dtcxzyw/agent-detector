@@ -9,7 +9,9 @@ pub fn find_agent_in_parent_tree() -> Option<String> {
     system.refresh_processes(ProcessesToUpdate::All, true);
 
     let current_pid = Pid::from_u32(std::process::id());
-    let mut pid = Some(current_pid);
+    let mut pid = system
+        .process(current_pid)
+        .and_then(sysinfo::Process::parent);
 
     while let Some(p) = pid {
         let proc = system.process(p)?;

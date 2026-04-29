@@ -224,6 +224,20 @@ mod tests {
     }
 
     #[test]
+    fn test_check_standard_env_var_agent_empty() {
+        let _guard = EnvGuard::set("AGENT", "");
+        let result = check_standard_env_vars();
+        assert!(result.is_none());
+    }
+
+    #[test]
+    fn test_check_standard_env_var_agent_whitespace() {
+        let _guard = EnvGuard::set("AGENT", "   ");
+        let result = check_standard_env_vars();
+        assert!(result.is_none());
+    }
+
+    #[test]
     fn test_check_tool_env_var_cursor() {
         let _guard = EnvGuard::set("CURSOR_TRACE_ID", "abc123");
         let result = check_tool_env_vars();
