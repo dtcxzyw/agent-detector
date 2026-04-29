@@ -84,10 +84,10 @@ fn check_standard_env_vars() -> Option<AgentInfo> {
 
     for &var in STANDARD_VARS {
         if let Ok(value) = env::var(var) {
-            let value = value.trim();
+            let value = value.trim().to_ascii_lowercase();
             if !value.is_empty() {
                 return Some(AgentInfo {
-                    name: value.to_string(),
+                    name: value,
                     source: DetectionSource::StandardEnvVar,
                 });
             }
@@ -98,17 +98,17 @@ fn check_standard_env_vars() -> Option<AgentInfo> {
 }
 
 fn check_tool_env_vars() -> Option<AgentInfo> {
-    for tool_agent in agents::TOOL_AGENTS {
-        for &env_var in tool_agent.env_vars {
-            if env::var(env_var).is_ok() {
-                if tool_agent.name == "claude-code" && env::var("CLAUDE_CODE_IS_COWORK").is_ok() {
+    for agent in agents::AGENTS {
+        for &env_var in agent.env_vars {
+            if env_var_is_set(env_var) {
+                if agent.name == "claude-code" && env::var("CLAUDE_CODE_IS_COWORK").is_ok() {
                     return Some(AgentInfo {
                         name: "cowork".to_string(),
                         source: DetectionSource::ToolEnvVar,
                     });
                 }
                 return Some(AgentInfo {
-                    name: tool_agent.name.to_string(),
+                    name: agent.name.to_string(),
                     source: DetectionSource::ToolEnvVar,
                 });
             }
@@ -116,6 +116,14 @@ fn check_tool_env_vars() -> Option<AgentInfo> {
     }
 
     None
+}
+
+fn env_var_is_set(var: &str) -> bool {
+    if var == "CURSOR_EXTENSION_HOST_ROLE" {
+        env::var(var).is_ok_and(|v| v == "agent-exec")
+    } else {
+        env::var(var).is_ok()
+    }
 }
 
 #[cfg(test)]
@@ -150,7 +158,7 @@ mod tests {
 
     #[test]
     fn test_agent_name_with_env_var() {
-        unsafe { set_env("AI_AGENT", "test-bot") };
+        unsafe { set_env("AI_AGENT", "Test-Bot") };
         let result = check_standard_env_vars();
         unsafe { remove_env("AI_AGENT") };
 
@@ -159,7 +167,7 @@ mod tests {
 
     #[test]
     fn test_check_standard_env_var_ai_agent() {
-        unsafe { set_env("AI_AGENT", "opencode") };
+        unsafe { set_env("AI_AGENT", "OpenCode") };
         let result = check_standard_env_vars();
         unsafe { remove_env("AI_AGENT") };
 
@@ -209,6 +217,25 @@ mod tests {
         let info = result.unwrap();
         assert_eq!(info.name, "cursor");
         assert_eq!(info.source, DetectionSource::ToolEnvVar);
+    }
+
+    #[test]
+    fn test_cursor_extension_host_role_agent_exec() {
+        unsafe { set_env("CURSOR_EXTENSION_HOST_ROLE", "agent-exec") };
+        let result = check_tool_env_vars();
+        unsafe { remove_env("CURSOR_EXTENSION_HOST_ROLE") };
+
+        assert!(result.is_some());
+        assert_eq!(result.unwrap().name, "cursor-cli");
+    }
+
+    #[test]
+    fn test_cursor_extension_host_role_other_value() {
+        unsafe { set_env("CURSOR_EXTENSION_HOST_ROLE", "editor") };
+        let result = check_tool_env_vars();
+        unsafe { remove_env("CURSOR_EXTENSION_HOST_ROLE") };
+
+        assert!(result.is_none());
     }
 
     #[test]

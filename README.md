@@ -99,12 +99,12 @@ Three tiers, checked in priority order:
 | CodeBuddy | codebuddy | — |
 | Cline | — | CLINE_ACTIVE |
 | Codex CLI | codex | CODEX_SANDBOX, CODEX_CI, CODEX_THREAD_ID |
-| Cowork | — | CLAUDE_CODE_IS_COWORK + (CLAUDECODE\|CLAUDE_CODE) |
+| Cowork | claude¹ | CLAUDE_CODE_IS_COWORK + (CLAUDECODE\|CLAUDE_CODE) |
 | Cursor | cursor | CURSOR_TRACE_ID |
 | Cursor CLI | — | CURSOR_AGENT, CURSOR_EXTENSION_HOST_ROLE |
 | Devin | devin | — |
 | Gemini CLI | gemini | GEMINI_CLI |
-| GitHub Copilot | github-copilot | COPILOT_MODEL, COPILOT_ALLOW_ALL, COPILOT_GITHUB_TOKEN |
+| GitHub Copilot | copilot | COPILOT_MODEL, COPILOT_ALLOW_ALL, COPILOT_GITHUB_TOKEN |
 | Gloamy | gloamy | — |
 | Goose | goose | GOOSE_TERMINAL |
 | Hermes Agent | hermes | — |
@@ -124,6 +124,8 @@ Three tiers, checked in priority order:
 | Windsurf | windsurf | — |
 | ZeroClaw | zeroclaw | — |
 
+¹ Detected via `claude` process tree match when `CLAUDE_CODE_IS_COWORK` is also set.
+
 ## License
 
 Licensed under the [MIT License](LICENSE).
@@ -134,8 +136,7 @@ Contributions are welcome. Please ensure `pre-commit install` is run and
 all hooks pass before submitting a PR.
 
 To add support for a new agent:
-1. Add the agent to `src/agents.rs` — env vars in `TOOL_AGENTS` and/or
-   process name in `PARENT_PROCESS_NAMES`.
+1. Add the agent to the `AGENTS` table in `src/agents.rs`.
 2. Add a test in `src/lib.rs` verifying the new detection logic.
 3. Update the Supported Agents table in this README.
 4. Run `cargo clippy && cargo test && cargo test --no-default-features`.
