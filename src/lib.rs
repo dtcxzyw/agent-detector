@@ -101,7 +101,7 @@ fn check_tool_env_vars() -> Option<AgentInfo> {
     for agent in agents::AGENTS {
         for &env_var in agent.env_vars {
             if env_var_is_set(env_var) {
-                if agent.name == "claude-code" && env::var("CLAUDE_CODE_IS_COWORK").is_ok() {
+                if agent.name == "claude-code" && env_var_is_set("CLAUDE_CODE_IS_COWORK") {
                     return Some(AgentInfo {
                         name: "cowork".to_string(),
                         source: DetectionSource::ToolEnvVar,
@@ -122,7 +122,7 @@ fn env_var_is_set(var: &str) -> bool {
     if var == "CURSOR_EXTENSION_HOST_ROLE" {
         env::var(var).is_ok_and(|v| v == "agent-exec")
     } else {
-        env::var(var).is_ok()
+        env::var(var).is_ok_and(|v| !v.is_empty())
     }
 }
 
@@ -130,19 +130,27 @@ fn env_var_is_set(var: &str) -> bool {
 mod tests {
     use super::*;
 
-    unsafe fn set_env(key: &str, value: &str) {
-        unsafe { env::set_var(key, value) };
+    struct EnvGuard {
+        key: &'static str,
     }
 
-    unsafe fn remove_env(key: &str) {
-        unsafe { env::remove_var(key) };
+    impl EnvGuard {
+        fn set(key: &'static str, value: &str) -> Self {
+            unsafe { std::env::set_var(key, value) };
+            EnvGuard { key }
+        }
+    }
+
+    impl Drop for EnvGuard {
+        fn drop(&mut self) {
+            unsafe { std::env::remove_var(self.key) };
+        }
     }
 
     #[test]
     fn test_detect_with_env_var() {
-        unsafe { set_env("OPENCODE_CLIENT", "1") };
+        let _guard = EnvGuard::set("OPENCODE_CLIENT", "1");
         let result = detect();
-        unsafe { remove_env("OPENCODE_CLIENT") };
 
         assert!(result.is_some());
         let info = result.unwrap();
@@ -151,25 +159,22 @@ mod tests {
 
     #[test]
     fn test_is_agent_with_env_var() {
-        unsafe { set_env("CLAUDECODE", "1") };
+        let _guard = EnvGuard::set("CLAUDECODE", "1");
         assert!(is_agent());
-        unsafe { remove_env("CLAUDECODE") };
     }
 
     #[test]
     fn test_agent_name_with_env_var() {
-        unsafe { set_env("AI_AGENT", "Test-Bot") };
+        let _guard = EnvGuard::set("AI_AGENT", "Test-Bot");
         let result = check_standard_env_vars();
-        unsafe { remove_env("AI_AGENT") };
 
         assert_eq!(result.unwrap().name, "test-bot");
     }
 
     #[test]
     fn test_check_standard_env_var_ai_agent() {
-        unsafe { set_env("AI_AGENT", "OpenCode") };
+        let _guard = EnvGuard::set("AI_AGENT", "OpenCode");
         let result = check_standard_env_vars();
-        unsafe { remove_env("AI_AGENT") };
 
         assert!(result.is_some());
         let info = result.unwrap();
@@ -179,9 +184,8 @@ mod tests {
 
     #[test]
     fn test_check_standard_env_var_agent() {
-        unsafe { set_env("AGENT", "my-custom-agent") };
+        let _guard = EnvGuard::set("AGENT", "my-custom-agent");
         let result = check_standard_env_vars();
-        unsafe { remove_env("AGENT") };
 
         assert!(result.is_some());
         let info = result.unwrap();
@@ -191,11 +195,9 @@ mod tests {
 
     #[test]
     fn test_check_standard_env_var_ai_agent_priority() {
-        unsafe { set_env("AI_AGENT", "first") };
-        unsafe { set_env("AGENT", "second") };
+        let _ai = EnvGuard::set("AI_AGENT", "first");
+        let _agent = EnvGuard::set("AGENT", "second");
         let result = check_standard_env_vars();
-        unsafe { remove_env("AI_AGENT") };
-        unsafe { remove_env("AGENT") };
 
         assert!(result.is_some());
         assert_eq!(result.unwrap().name, "first");
@@ -208,10 +210,23 @@ mod tests {
     }
 
     #[test]
+    fn test_check_standard_env_var_ai_agent_empty() {
+        let _guard = EnvGuard::set("AI_AGENT", "");
+        let result = check_standard_env_vars();
+        assert!(result.is_none());
+    }
+
+    #[test]
+    fn test_check_standard_env_var_ai_agent_whitespace() {
+        let _guard = EnvGuard::set("AI_AGENT", "   ");
+        let result = check_standard_env_vars();
+        assert!(result.is_none());
+    }
+
+    #[test]
     fn test_check_tool_env_var_cursor() {
-        unsafe { set_env("CURSOR_TRACE_ID", "abc123") };
+        let _guard = EnvGuard::set("CURSOR_TRACE_ID", "abc123");
         let result = check_tool_env_vars();
-        unsafe { remove_env("CURSOR_TRACE_ID") };
 
         assert!(result.is_some());
         let info = result.unwrap();
@@ -221,9 +236,8 @@ mod tests {
 
     #[test]
     fn test_cursor_extension_host_role_agent_exec() {
-        unsafe { set_env("CURSOR_EXTENSION_HOST_ROLE", "agent-exec") };
+        let _guard = EnvGuard::set("CURSOR_EXTENSION_HOST_ROLE", "agent-exec");
         let result = check_tool_env_vars();
-        unsafe { remove_env("CURSOR_EXTENSION_HOST_ROLE") };
 
         assert!(result.is_some());
         assert_eq!(result.unwrap().name, "cursor-cli");
@@ -231,18 +245,16 @@ mod tests {
 
     #[test]
     fn test_cursor_extension_host_role_other_value() {
-        unsafe { set_env("CURSOR_EXTENSION_HOST_ROLE", "editor") };
+        let _guard = EnvGuard::set("CURSOR_EXTENSION_HOST_ROLE", "editor");
         let result = check_tool_env_vars();
-        unsafe { remove_env("CURSOR_EXTENSION_HOST_ROLE") };
 
         assert!(result.is_none());
     }
 
     #[test]
     fn test_check_tool_env_var_claude() {
-        unsafe { set_env("CLAUDECODE", "1") };
+        let _guard = EnvGuard::set("CLAUDECODE", "1");
         let result = check_tool_env_vars();
-        unsafe { remove_env("CLAUDECODE") };
 
         assert!(result.is_some());
         assert_eq!(result.unwrap().name, "claude-code");
@@ -250,20 +262,27 @@ mod tests {
 
     #[test]
     fn test_cowork_requires_claudecode() {
-        unsafe { set_env("CLAUDE_CODE_IS_COWORK", "1") };
+        let _guard = EnvGuard::set("CLAUDE_CODE_IS_COWORK", "1");
         let result = check_tool_env_vars();
-        unsafe { remove_env("CLAUDE_CODE_IS_COWORK") };
 
         assert!(result.is_none());
     }
 
     #[test]
-    fn test_cowork_with_claudecode() {
-        unsafe { set_env("CLAUDE_CODE_IS_COWORK", "1") };
-        unsafe { set_env("CLAUDECODE", "1") };
+    fn test_cowork_empty_cowork_value() {
+        let _cw = EnvGuard::set("CLAUDE_CODE_IS_COWORK", "");
+        let _claude = EnvGuard::set("CLAUDECODE", "1");
         let result = check_tool_env_vars();
-        unsafe { remove_env("CLAUDE_CODE_IS_COWORK") };
-        unsafe { remove_env("CLAUDECODE") };
+
+        assert!(result.is_some());
+        assert_eq!(result.unwrap().name, "claude-code");
+    }
+
+    #[test]
+    fn test_cowork_with_claudecode() {
+        let _cw = EnvGuard::set("CLAUDE_CODE_IS_COWORK", "1");
+        let _claude = EnvGuard::set("CLAUDECODE", "1");
+        let result = check_tool_env_vars();
 
         assert!(result.is_some());
         assert_eq!(result.unwrap().name, "cowork");
@@ -271,9 +290,8 @@ mod tests {
 
     #[test]
     fn test_check_tool_env_var_gemini() {
-        unsafe { set_env("GEMINI_CLI", "1") };
+        let _guard = EnvGuard::set("GEMINI_CLI", "1");
         let result = check_tool_env_vars();
-        unsafe { remove_env("GEMINI_CLI") };
 
         assert!(result.is_some());
         assert_eq!(result.unwrap().name, "gemini");
@@ -281,9 +299,8 @@ mod tests {
 
     #[test]
     fn test_check_tool_env_var_codex() {
-        unsafe { set_env("CODEX_CI", "1") };
+        let _guard = EnvGuard::set("CODEX_CI", "1");
         let result = check_tool_env_vars();
-        unsafe { remove_env("CODEX_CI") };
 
         assert!(result.is_some());
         assert_eq!(result.unwrap().name, "codex");
@@ -291,12 +308,19 @@ mod tests {
 
     #[test]
     fn test_check_tool_env_var_opencode() {
-        unsafe { set_env("OPENCODE_CLIENT", "1") };
+        let _guard = EnvGuard::set("OPENCODE_CLIENT", "1");
         let result = check_tool_env_vars();
-        unsafe { remove_env("OPENCODE_CLIENT") };
 
         assert!(result.is_some());
         assert_eq!(result.unwrap().name, "opencode");
+    }
+
+    #[test]
+    fn test_check_tool_env_var_empty_value() {
+        let _guard = EnvGuard::set("CLAUDECODE", "");
+        let result = check_tool_env_vars();
+
+        assert!(result.is_none());
     }
 
     #[test]

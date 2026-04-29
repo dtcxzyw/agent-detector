@@ -22,7 +22,9 @@ pub fn find_agent_in_parent_tree() -> Option<String> {
         for agent in AGENTS {
             for &candidate in agent.process_names {
                 if is_process_match(name_raw, candidate) {
-                    if agent.name == "claude-code" && env::var("CLAUDE_CODE_IS_COWORK").is_ok() {
+                    if agent.name == "claude-code"
+                        && env::var("CLAUDE_CODE_IS_COWORK").is_ok_and(|v| !v.is_empty())
+                    {
                         return Some("cowork".to_string());
                     }
                     return Some(agent.name.to_string());
