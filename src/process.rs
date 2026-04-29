@@ -1,3 +1,5 @@
+use std::env;
+
 use sysinfo::{Pid, ProcessesToUpdate, System};
 
 use crate::agents::PARENT_PROCESS_NAMES;
@@ -20,6 +22,9 @@ pub fn find_agent_in_parent_tree() -> Option<String> {
 
         for &(process_name, agent_name) in PARENT_PROCESS_NAMES {
             if name_trimmed.eq_ignore_ascii_case(process_name) {
+                if agent_name == "claude-code" && env::var("CLAUDE_CODE_IS_COWORK").is_ok() {
+                    return Some("cowork".to_string());
+                }
                 return Some(agent_name.to_string());
             }
         }

@@ -1,17 +1,16 @@
 #[cfg(feature = "process-tree")]
 pub static PARENT_PROCESS_NAMES: &[(&str, &str)] = &[
     ("aider", "aider"),
-    ("amp", "amp"),
-    ("antigravity", "antigravity"),
+    ("amp", "antigravity"),
     ("augment-cli", "augment-cli"),
     ("cara", "carapace"),
     ("claude", "claude-code"),
     ("codebuddy", "codebuddy"),
     ("codex", "codex"),
+    ("copilot", "github-copilot"),
     ("cursor", "cursor"),
     ("devin", "devin"),
     ("gemini", "gemini"),
-    ("github-copilot", "github-copilot"),
     ("gloamy", "gloamy"),
     ("goose", "goose"),
     ("hermes", "hermes"),
@@ -63,10 +62,6 @@ pub static TOOL_AGENTS: &[ToolAgent] = &[
     ToolAgent {
         name: "opencode",
         env_vars: &["OPENCODE_CLIENT"],
-    },
-    ToolAgent {
-        name: "cowork",
-        env_vars: &["CLAUDE_CODE_IS_COWORK"],
     },
     ToolAgent {
         name: "claude-code",

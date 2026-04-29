@@ -98,18 +98,15 @@ fn check_standard_env_vars() -> Option<AgentInfo> {
 }
 
 fn check_tool_env_vars() -> Option<AgentInfo> {
-    let cowork = check_cowork();
-    if let Some(info) = cowork {
-        return Some(info);
-    }
-
     for tool_agent in agents::TOOL_AGENTS {
-        if tool_agent.name == "cowork" {
-            continue;
-        }
-
         for &env_var in tool_agent.env_vars {
             if env::var(env_var).is_ok() {
+                if tool_agent.name == "claude-code" && env::var("CLAUDE_CODE_IS_COWORK").is_ok() {
+                    return Some(AgentInfo {
+                        name: "cowork".to_string(),
+                        source: DetectionSource::ToolEnvVar,
+                    });
+                }
                 return Some(AgentInfo {
                     name: tool_agent.name.to_string(),
                     source: DetectionSource::ToolEnvVar,
@@ -118,18 +115,6 @@ fn check_tool_env_vars() -> Option<AgentInfo> {
         }
     }
 
-    None
-}
-
-fn check_cowork() -> Option<AgentInfo> {
-    if env::var("CLAUDE_CODE_IS_COWORK").is_ok()
-        && (env::var("CLAUDECODE").is_ok() || env::var("CLAUDE_CODE").is_ok())
-    {
-        return Some(AgentInfo {
-            name: "cowork".to_string(),
-            source: DetectionSource::ToolEnvVar,
-        });
-    }
     None
 }
 
