@@ -23,6 +23,7 @@ mod process;
 
 /// Information about the detected agent.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub struct AgentInfo {
     /// The agent name (e.g. `"opencode"`, `"claude-code"`), always lowercase.
     /// For unknown `AI_AGENT` / `AGENT` values, this is the lowercased literal value.
@@ -33,6 +34,7 @@ pub struct AgentInfo {
 
 /// Indicates which detection tier produced the result.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum DetectionSource {
     /// Detected via parent process tree walking.
     #[cfg(feature = "process-tree")]
@@ -46,6 +48,11 @@ pub enum DetectionSource {
 /// Run full agent detection (L1 → L2 → L3).
 ///
 /// Returns `None` if no agent is detected.
+///
+/// No tests cover the L1 > L2 > L3 priority chain. Priority is structurally
+/// guaranteed by the sequential `if let Some(…) { return … }` pattern, and
+/// each tier is tested independently. Adding combinatorial priority tests
+/// would increase maintenance cost without proportional benefit.
 #[must_use]
 pub fn detect() -> Option<AgentInfo> {
     #[cfg(feature = "process-tree")]
@@ -97,11 +104,15 @@ fn check_standard_env_vars() -> Option<AgentInfo> {
     None
 }
 
+fn is_cowork_override() -> bool {
+    env::var("CLAUDE_CODE_IS_COWORK").is_ok_and(|v| !v.is_empty())
+}
+
 fn check_tool_env_vars() -> Option<AgentInfo> {
     for agent in agents::AGENTS {
         for &env_var in agent.env_vars {
             if env_var_is_set(env_var) {
-                if agent.name == "claude-code" && env_var_is_set("CLAUDE_CODE_IS_COWORK") {
+                if agent.name == "claude-code" && is_cowork_override() {
                     return Some(AgentInfo {
                         name: "cowork".to_string(),
                         source: DetectionSource::ToolEnvVar,
@@ -136,6 +147,8 @@ mod tests {
 
     impl EnvGuard {
         fn set(key: &'static str, value: &str) -> Self {
+            // SAFETY: tests run single-threaded (RUST_TEST_THREADS=1), and
+            // EnvGuard cleans up on Drop, so no race conditions exist.
             unsafe { std::env::set_var(key, value) };
             EnvGuard { key }
         }
@@ -143,6 +156,8 @@ mod tests {
 
     impl Drop for EnvGuard {
         fn drop(&mut self) {
+            // SAFETY: cleanup paired with the set() in the same guard;
+            // still single-threaded.
             unsafe { std::env::remove_var(self.key) };
         }
     }

@@ -1,10 +1,8 @@
-use std::env;
-
 use sysinfo::{Pid, ProcessesToUpdate, System};
 
 use crate::agents::AGENTS;
 
-pub fn find_agent_in_parent_tree() -> Option<String> {
+pub(crate) fn find_agent_in_parent_tree() -> Option<String> {
     let mut system = System::new();
     system.refresh_processes(ProcessesToUpdate::All, true);
 
@@ -24,9 +22,7 @@ pub fn find_agent_in_parent_tree() -> Option<String> {
         for agent in AGENTS {
             for &candidate in agent.process_names {
                 if is_process_match(name_raw, candidate) {
-                    if agent.name == "claude-code"
-                        && env::var("CLAUDE_CODE_IS_COWORK").is_ok_and(|v| !v.is_empty())
-                    {
+                    if agent.name == "claude-code" && crate::is_cowork_override() {
                         return Some("cowork".to_string());
                     }
                     return Some(agent.name.to_string());

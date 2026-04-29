@@ -1,6 +1,10 @@
 #[derive(Debug)]
 pub(crate) struct AgentEntry {
     pub name: &'static str,
+    // When `process-tree` is off, `process_names` is unused but still
+    // compiled. The data is a few hundred bytes of static string slices; the
+    // noise of `#[cfg]` on every entry outweighs the negligible binary size
+    // savings.
     #[cfg_attr(not(feature = "process-tree"), allow(dead_code))]
     pub process_names: &'static [&'static str],
     pub env_vars: &'static [&'static str],

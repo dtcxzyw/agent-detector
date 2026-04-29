@@ -2,6 +2,7 @@
 name = "agent-detector"
 version = "0.1.0"
 edition = "2024"
+rust-version = "1.85"
 license = "MIT"
 description = "Detect whether an AI coding agent is the caller, enabling automatic agent-friendly output for Rust CLI applications."
 homepage = "https://github.com/dtcxzyw/agent-detector"
