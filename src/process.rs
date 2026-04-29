@@ -12,10 +12,14 @@ pub fn find_agent_in_parent_tree() -> Option<String> {
     while let Some(p) = pid {
         let proc = system.process(p)?;
 
-        let name = proc.name();
+        let Some(name_raw) = proc.name().to_str() else {
+            pid = proc.parent();
+            continue;
+        };
+        let name_trimmed = name_raw.strip_suffix(".exe").unwrap_or(name_raw);
 
         for &(process_name, agent_name) in PARENT_PROCESS_NAMES {
-            if name == process_name {
+            if name_trimmed.eq_ignore_ascii_case(process_name) {
                 return Some(agent_name.to_string());
             }
         }
