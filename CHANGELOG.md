@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1](https://github.com/dtcxzyw/agent-detector/compare/v0.2.0...v0.2.1) - 2026-05-22
+
+### Added
+
+- add 38 new agent detections
+
+### Other
+
+- add download badge and remove fixed version from installation
+
 ## [0.2.0](https://github.com/dtcxzyw/agent-detector/compare/v0.1.0...v0.2.0) - 2026-04-29
 
 ### Fixed
