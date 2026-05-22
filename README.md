@@ -92,37 +92,75 @@ Three tiers, checked in priority order:
 | Agent | L1 (Process) | L3 (Tool Env Var) |
 |-------|:---:|:---|
 | Aider | aider | — |
+| AlayaCore | alayacore | — |
+| Anda Bot | anda | — |
 | Antigravity | amp | ANTIGRAVITY_AGENT |
+| AstrBot | astrbot | ASTRBOT_CLI |
 | Augment CLI | augment-cli | AUGMENT_AGENT |
+| Autohand Code | autohand | AUTOHAND_CLI |
+| Axiomate | axiomate | — |
+| Bash Agent | — | BASH_AGENT_HOME |
 | Carapace | cara | — |
 | Claude Code | claude | CLAUDECODE, CLAUDE_CODE |
+| ClawX | clawx | CLAWHUB_WORKDIR |
 | CodeBuddy | codebuddy | — |
-| Cline | — | CLINE_ACTIVE |
+| CodeProxy CLI | codeproxy | — |
 | Codex CLI | codex | CODEX_SANDBOX, CODEX_CI, CODEX_THREAD_ID |
+| Cow Agent | cow | — |
 | Cowork | claude¹ | CLAUDE_CODE_IS_COWORK + (CLAUDECODE\|CLAUDE_CODE) |
+| Cline | — | CLINE_ACTIVE |
+| Crush | crush | — |
+| Ctrl | ctrl | — |
 | Cursor | cursor | CURSOR_TRACE_ID |
 | Cursor CLI | — | CURSOR_AGENT, CURSOR_EXTENSION_HOST_ROLE |
+| Deep Code | deepcode | — |
+| Deep Copilot | deep-copilot | — |
+| DeepLossless | deeplossless | — |
+| DeepSeek-TUI | deepseek-tui | — |
+| DeepSeekX | deepseekx | — |
 | Devin | devin | — |
+| dscli | dscli | — |
+| dscode | dscode | — |
 | Gemini CLI | gemini | GEMINI_CLI |
 | GitHub Copilot | copilot | COPILOT_MODEL, COPILOT_ALLOW_ALL, COPILOT_GITHUB_TOKEN |
 | Gloamy | gloamy | — |
+| GoAgent | goagent | — |
 | Goose | goose | GOOSE_TERMINAL |
+| HalfCopilot | halfcopilot | — |
 | Hermes Agent | hermes | — |
 | IronClaw | ironclaw | — |
+| Kilo Code | kilo | — |
 | Kimi CLI | kimi, kimi-cli | — |
+| KIMIX | kimix | — |
+| LangBot | langbot | — |
+| Langcli | langcli | — |
 | Loong | loong | — |
+| Markus | markus | — |
 | MicroClaw | microclaw | — |
 | Moltis | moltis | — |
+| Morph | mistermorph | — |
 | Nanobot | nanobot | — |
+| Oh My Pi | omp | — |
 | OpenClaw | — | OPENCLAW_SHELL |
 | OpenCode | opencode | OPENCODE_CLIENT |
+| Operit | operit | — |
 | Pi | — | PI_CODING_AGENT |
 | PicoClaw | picoclaw | — |
+| Proma | proma | — |
+| Qwen Code | qwen | — |
+| Reasonix | reasonix | — |
 | Replit | — | REPL_ID |
 | Roo Code | — | ROO_ACTIVE |
+| Snow CLI | snow | — |
+| SolonCode | soloncode | — |
+| Tday | tday | — |
+| Tiangong | tiangong | — |
 | TRAE AI | trae | TRAE_AI_SHELL_ID |
+| Whale | whale | — |
 | Windsurf | windsurf | — |
+| Xpro | xpro | — |
 | ZeroClaw | zeroclaw | — |
+| zot | zot | — |
 
 ¹ Detected via `claude` process tree match when `CLAUDE_CODE_IS_COWORK` is also set.
 

@@ -169,4 +169,194 @@ pub(crate) static AGENTS: &[AgentEntry] = &[
         process_names: &["zeroclaw"],
         env_vars: &[],
     },
+    AgentEntry {
+        name: "alayacore",
+        process_names: &["alayacore"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "anda-bot",
+        process_names: &["anda"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "astrbot",
+        process_names: &["astrbot"],
+        env_vars: &["ASTRBOT_CLI"],
+    },
+    AgentEntry {
+        name: "autohand-code",
+        process_names: &["autohand"],
+        env_vars: &["AUTOHAND_CLI"],
+    },
+    AgentEntry {
+        name: "axiomate",
+        process_names: &["axiomate"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "bash-agent",
+        process_names: &[],
+        env_vars: &["BASH_AGENT_HOME"],
+    },
+    AgentEntry {
+        name: "clawx",
+        process_names: &["clawx"],
+        env_vars: &["CLAWHUB_WORKDIR"],
+    },
+    AgentEntry {
+        name: "codeproxy-cli",
+        process_names: &["codeproxy"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "cow-agent",
+        process_names: &["cow"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "crush",
+        process_names: &["crush"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "ctrl",
+        process_names: &["ctrl"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "deep-code",
+        process_names: &["deepcode"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "deep-copilot",
+        process_names: &["deep-copilot"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "deeplossless",
+        process_names: &["deeplossless"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "deepseek-tui",
+        process_names: &["deepseek-tui"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "deepseekx",
+        process_names: &["deepseekx"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "dscli",
+        process_names: &["dscli"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "dscode",
+        process_names: &["dscode"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "goagent",
+        process_names: &["goagent"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "halfcopilot",
+        process_names: &["halfcopilot"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "kilo-code",
+        process_names: &["kilo"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "kimix",
+        process_names: &["kimix"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "langbot",
+        process_names: &["langbot"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "langcli",
+        process_names: &["langcli"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "markus",
+        process_names: &["markus"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "morph",
+        process_names: &["mistermorph"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "oh-my-pi",
+        process_names: &["omp"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "operit",
+        process_names: &["operit"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "proma",
+        process_names: &["proma"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "qwen-code",
+        process_names: &["qwen"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "reasonix",
+        process_names: &["reasonix"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "snow-cli",
+        process_names: &["snow"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "soloncode",
+        process_names: &["soloncode"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "tday",
+        process_names: &["tday"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "tiangong",
+        process_names: &["tiangong"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "whale",
+        process_names: &["whale"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "xpro",
+        process_names: &["xpro"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "zot",
+        process_names: &["zot"],
+        env_vars: &[],
+    },
 ];
