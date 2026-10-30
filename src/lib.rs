@@ -45,7 +45,8 @@ pub enum DetectionSource {
     ToolEnvVar,
 }
 
-/// Run full agent detection (L1 → L2 → L3).
+/// Run full agent detection (L1 → L2 → L3), deferring generic L2 markers
+/// until after L3 so tool-specific environment variables take precedence.
 ///
 /// Returns `None` if no agent is detected.
 ///
@@ -63,15 +64,29 @@ pub fn detect() -> Option<AgentInfo> {
         });
     }
 
-    if let Some(info) = check_standard_env_vars() {
-        return Some(info);
+    detect_from_env()
+}
+
+fn detect_from_env() -> Option<AgentInfo> {
+    let standard = check_standard_env_vars();
+    if standard
+        .as_ref()
+        .is_some_and(|info| !is_generic_standard_value(&info.name))
+    {
+        return standard;
     }
 
     if let Some(info) = check_tool_env_vars() {
         return Some(info);
     }
 
-    None
+    // Some harnesses set a generic marker such as `AGENT=1`. Use it only when
+    // no tool-specific variable identified the agent.
+    standard
+}
+
+fn is_generic_standard_value(name: &str) -> bool {
+    matches!(name, "1" | "true" | "yes" | "on")
 }
 
 /// Returns `true` if the current process is running under an AI agent.
@@ -144,6 +159,42 @@ fn env_var_is_set(var: &str) -> bool {
 mod tests {
     use super::*;
 
+    struct CleanEnv {
+        saved: Vec<(&'static str, Option<std::ffi::OsString>)>,
+    }
+
+    impl CleanEnv {
+        fn new() -> Self {
+            let mut keys = vec!["AI_AGENT", "AGENT"];
+            for agent in agents::AGENTS {
+                keys.extend_from_slice(agent.env_vars);
+            }
+            keys.sort_unstable();
+            keys.dedup();
+
+            let saved = keys.iter().map(|&key| (key, env::var_os(key))).collect();
+            for key in keys {
+                // SAFETY: tests run single-threaded (RUST_TEST_THREADS=1).
+                unsafe { env::remove_var(key) };
+            }
+            CleanEnv { saved }
+        }
+    }
+
+    impl Drop for CleanEnv {
+        fn drop(&mut self) {
+            for (key, value) in &self.saved {
+                if let Some(value) = value {
+                    // SAFETY: tests run single-threaded (RUST_TEST_THREADS=1).
+                    unsafe { env::set_var(key, value) };
+                } else {
+                    // SAFETY: tests run single-threaded (RUST_TEST_THREADS=1).
+                    unsafe { env::remove_var(key) };
+                }
+            }
+        }
+    }
+
     struct EnvGuard {
         key: &'static str,
     }
@@ -167,6 +218,7 @@ mod tests {
 
     #[test]
     fn test_detect_with_env_var() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("OPENCODE_CLIENT", "1");
         let result = detect();
 
@@ -177,12 +229,14 @@ mod tests {
 
     #[test]
     fn test_is_agent_with_env_var() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("CLAUDECODE", "1");
         assert!(is_agent());
     }
 
     #[test]
     fn test_agent_name_with_env_var() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("AI_AGENT", "Test-Bot");
         let result = check_standard_env_vars();
 
@@ -191,6 +245,7 @@ mod tests {
 
     #[test]
     fn test_check_standard_env_var_ai_agent() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("AI_AGENT", "OpenCode");
         let result = check_standard_env_vars();
 
@@ -202,6 +257,7 @@ mod tests {
 
     #[test]
     fn test_check_standard_env_var_agent() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("AGENT", "my-custom-agent");
         let result = check_standard_env_vars();
 
@@ -213,6 +269,7 @@ mod tests {
 
     #[test]
     fn test_check_standard_env_var_ai_agent_priority() {
+        let _clean = CleanEnv::new();
         let _ai = EnvGuard::set("AI_AGENT", "first");
         let _agent = EnvGuard::set("AGENT", "second");
         let result = check_standard_env_vars();
@@ -223,12 +280,14 @@ mod tests {
 
     #[test]
     fn test_check_standard_env_var_none() {
+        let _clean = CleanEnv::new();
         let result = check_standard_env_vars();
         assert!(result.is_none());
     }
 
     #[test]
     fn test_check_standard_env_var_ai_agent_empty() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("AI_AGENT", "");
         let result = check_standard_env_vars();
         assert!(result.is_none());
@@ -236,6 +295,7 @@ mod tests {
 
     #[test]
     fn test_check_standard_env_var_ai_agent_whitespace() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("AI_AGENT", "   ");
         let result = check_standard_env_vars();
         assert!(result.is_none());
@@ -243,6 +303,7 @@ mod tests {
 
     #[test]
     fn test_check_standard_env_var_agent_empty() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("AGENT", "");
         let result = check_standard_env_vars();
         assert!(result.is_none());
@@ -250,6 +311,7 @@ mod tests {
 
     #[test]
     fn test_check_standard_env_var_agent_whitespace() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("AGENT", "   ");
         let result = check_standard_env_vars();
         assert!(result.is_none());
@@ -257,6 +319,7 @@ mod tests {
 
     #[test]
     fn test_check_tool_env_var_cursor() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("CURSOR_TRACE_ID", "abc123");
         let result = check_tool_env_vars();
 
@@ -268,6 +331,7 @@ mod tests {
 
     #[test]
     fn test_cursor_extension_host_role_agent_exec() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("CURSOR_EXTENSION_HOST_ROLE", "agent-exec");
         let result = check_tool_env_vars();
 
@@ -277,6 +341,7 @@ mod tests {
 
     #[test]
     fn test_cursor_extension_host_role_other_value() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("CURSOR_EXTENSION_HOST_ROLE", "editor");
         let result = check_tool_env_vars();
 
@@ -285,6 +350,7 @@ mod tests {
 
     #[test]
     fn test_check_tool_env_var_claude() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("CLAUDECODE", "1");
         let result = check_tool_env_vars();
 
@@ -294,6 +360,7 @@ mod tests {
 
     #[test]
     fn test_cowork_requires_claudecode() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("CLAUDE_CODE_IS_COWORK", "1");
         let result = check_tool_env_vars();
 
@@ -302,6 +369,7 @@ mod tests {
 
     #[test]
     fn test_cowork_empty_cowork_value() {
+        let _clean = CleanEnv::new();
         let _cw = EnvGuard::set("CLAUDE_CODE_IS_COWORK", "");
         let _claude = EnvGuard::set("CLAUDECODE", "1");
         let result = check_tool_env_vars();
@@ -312,6 +380,7 @@ mod tests {
 
     #[test]
     fn test_cowork_with_claudecode() {
+        let _clean = CleanEnv::new();
         let _cw = EnvGuard::set("CLAUDE_CODE_IS_COWORK", "1");
         let _claude = EnvGuard::set("CLAUDECODE", "1");
         let result = check_tool_env_vars();
@@ -322,6 +391,7 @@ mod tests {
 
     #[test]
     fn test_check_tool_env_var_gemini() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("GEMINI_CLI", "1");
         let result = check_tool_env_vars();
 
@@ -331,6 +401,7 @@ mod tests {
 
     #[test]
     fn test_check_tool_env_var_codex() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("CODEX_CI", "1");
         let result = check_tool_env_vars();
 
@@ -340,6 +411,7 @@ mod tests {
 
     #[test]
     fn test_check_tool_env_var_opencode() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("OPENCODE_CLIENT", "1");
         let result = check_tool_env_vars();
 
@@ -349,6 +421,7 @@ mod tests {
 
     #[test]
     fn test_check_tool_env_var_empty_value() {
+        let _clean = CleanEnv::new();
         let _guard = EnvGuard::set("CLAUDECODE", "");
         let result = check_tool_env_vars();
 
@@ -357,7 +430,57 @@ mod tests {
 
     #[test]
     fn test_check_tool_env_var_none() {
+        let _clean = CleanEnv::new();
         let result = check_tool_env_vars();
         assert!(result.is_none());
+    }
+
+    #[test]
+    fn test_generic_standard_value_defers_to_tool_env() {
+        let _agent = EnvGuard::set("AGENT", "1");
+        let _opencode = EnvGuard::set("OPENCODE", "1");
+        let result = detect_from_env();
+
+        assert!(result.is_some());
+        let info = result.unwrap();
+        assert_eq!(info.name, "opencode");
+        assert_eq!(info.source, DetectionSource::ToolEnvVar);
+    }
+
+    #[test]
+    fn test_generic_standard_value_fallback() {
+        let _agent = EnvGuard::set("AGENT", "1");
+        let result = detect_from_env();
+
+        assert!(result.is_some());
+        let info = result.unwrap();
+        assert_eq!(info.name, "1");
+        assert_eq!(info.source, DetectionSource::StandardEnvVar);
+    }
+
+    #[test]
+    fn test_tool_env_vars_for_new_agents() {
+        let _clean = CleanEnv::new();
+        let cases: &[(&str, &str)] = &[
+            ("AMP_CURRENT_THREAD_ID", "amp"),
+            ("ANTIGRAVITY_CLI_ALIAS", "antigravity"),
+            ("OZ_RUN_ID", "warp"),
+            ("JUNIE_DATA", "junie"),
+            ("GROK_PLUGIN_ROOT", "grok-build"),
+            ("DSH_SHELL", "deepseek-harness"),
+            ("MIMOCODE", "mimo-code"),
+            ("APODEX_SESSION_ID", "frontier-agent"),
+            ("KIMI_PLUGIN_ROOT", "kimi-cli"),
+            ("QWEN_CODE", "qwen-code"),
+            ("CODEX_SANDBOX_NETWORK_DISABLED", "codex"),
+            ("OPENCODE", "opencode"),
+        ];
+
+        for &(var, expected) in cases {
+            let _guard = EnvGuard::set(var, "1");
+            let result = check_tool_env_vars();
+            assert!(result.is_some(), "expected {expected} for {var}");
+            assert_eq!(result.unwrap().name, expected);
+        }
     }
 }

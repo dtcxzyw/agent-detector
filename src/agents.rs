@@ -21,7 +21,7 @@ pub(crate) static AGENTS: &[AgentEntry] = &[
     },
     AgentEntry {
         name: "cursor-cli",
-        process_names: &[],
+        process_names: &["cursor-agent"],
         env_vars: &["CURSOR_AGENT", "CURSOR_EXTENSION_HOST_ROLE"],
     },
     AgentEntry {
@@ -32,12 +32,32 @@ pub(crate) static AGENTS: &[AgentEntry] = &[
     AgentEntry {
         name: "codex",
         process_names: &["codex"],
-        env_vars: &["CODEX_SANDBOX", "CODEX_CI", "CODEX_THREAD_ID"],
+        env_vars: &[
+            "CODEX_SANDBOX",
+            "CODEX_CI",
+            "CODEX_THREAD_ID",
+            "CODEX_SANDBOX_NETWORK_DISABLED",
+        ],
+    },
+    AgentEntry {
+        name: "grok-build",
+        process_names: &["grok"],
+        env_vars: &["GROK_PLUGIN_ROOT", "GROK_PLUGIN_DATA"],
+    },
+    AgentEntry {
+        name: "deepseek-harness",
+        process_names: &["dsh"],
+        env_vars: &["DSH_SHELL"],
+    },
+    AgentEntry {
+        name: "amp",
+        process_names: &["amp"],
+        env_vars: &["AMP_CURRENT_THREAD_ID"],
     },
     AgentEntry {
         name: "antigravity",
-        process_names: &["amp"],
-        env_vars: &["ANTIGRAVITY_AGENT"],
+        process_names: &["antigravity"],
+        env_vars: &["ANTIGRAVITY_AGENT", "ANTIGRAVITY_CLI_ALIAS"],
     },
     AgentEntry {
         name: "augment-cli",
@@ -47,7 +67,7 @@ pub(crate) static AGENTS: &[AgentEntry] = &[
     AgentEntry {
         name: "opencode",
         process_names: &["opencode"],
-        env_vars: &["OPENCODE_CLIENT"],
+        env_vars: &["OPENCODE_CLIENT", "OPENCODE"],
     },
     AgentEntry {
         name: "claude-code",
@@ -56,7 +76,7 @@ pub(crate) static AGENTS: &[AgentEntry] = &[
     },
     AgentEntry {
         name: "cline",
-        process_names: &[],
+        process_names: &["cline"],
         env_vars: &["CLINE_ACTIVE"],
     },
     AgentEntry {
@@ -132,7 +152,7 @@ pub(crate) static AGENTS: &[AgentEntry] = &[
     AgentEntry {
         name: "kimi-cli",
         process_names: &["kimi", "kimi-cli"],
-        env_vars: &[],
+        env_vars: &["KIMI_PLUGIN_ROOT"],
     },
     AgentEntry {
         name: "loong",
@@ -317,7 +337,7 @@ pub(crate) static AGENTS: &[AgentEntry] = &[
     AgentEntry {
         name: "qwen-code",
         process_names: &["qwen"],
-        env_vars: &[],
+        env_vars: &["QWEN_CODE"],
     },
     AgentEntry {
         name: "reasonix",
@@ -359,4 +379,147 @@ pub(crate) static AGENTS: &[AgentEntry] = &[
         process_names: &["zot"],
         env_vars: &[],
     },
+    AgentEntry {
+        name: "warp",
+        process_names: &[],
+        env_vars: &["OZ_RUN_ID"],
+    },
+    AgentEntry {
+        name: "junie",
+        process_names: &["junie"],
+        env_vars: &["JUNIE_DATA", "JUNIE_SHIM_PATH"],
+    },
+    AgentEntry {
+        name: "kiro",
+        process_names: &["kiro-cli"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "factory-droid",
+        process_names: &["droid"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "qoder",
+        process_names: &["qodercli"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "openhands",
+        process_names: &["openhands", "openhands-agent", "openhands-agent-server"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "open-interpreter",
+        process_names: &["interpreter"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "zcode",
+        process_names: &["zcode"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "mimo-code",
+        process_names: &["mimo"],
+        env_vars: &["MIMOCODE"],
+    },
+    AgentEntry {
+        name: "minimax-code",
+        process_names: &["mcode", "mcode-tools"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "prime-agent",
+        process_names: &["prime-agent"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "fuxi",
+        process_names: &["fuxi"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "frontier-agent",
+        process_names: &["apodex", "frontier-agent"],
+        env_vars: &["APODEX_SESSION_ID"],
+    },
+    AgentEntry {
+        name: "zero",
+        process_names: &["zero"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "tau",
+        process_names: &["tau"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "waku",
+        process_names: &["waku"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "loushang",
+        process_names: &["loushang"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "whipcode",
+        process_names: &["whipcode"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "omnigent",
+        process_names: &["omnigent"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "swe-agent",
+        process_names: &["sweagent"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "mistral-vibe",
+        process_names: &["vibe"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "codebuff",
+        process_names: &["codebuff", "freebuff", "codebuff-tui"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "octofriend",
+        process_names: &["octofriend", "octo"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "continue",
+        process_names: &["cn"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "muse-code",
+        process_names: &["muse"],
+        env_vars: &[],
+    },
+    AgentEntry {
+        name: "mastracode",
+        process_names: &["mastracode"],
+        env_vars: &[],
+    },
+];
+
+// Package-based launchers are often started as `node .../node_modules/.../cli.js`,
+// where the runtime owns the process name. Match a distinctive package-path
+// fragment against the launcher arguments instead.
+#[cfg_attr(not(feature = "process-tree"), allow(dead_code))]
+pub(crate) static CMDLINE_MARKERS: &[(&str, &[&str])] = &[
+    ("claude-code", &["@anthropic-ai/claude-code"]),
+    ("continue", &["@continuedev/cli"]),
+    ("gemini", &["@google/gemini-cli"]),
+    ("mastracode", &["mastracode"]),
+    ("minimax-code", &["@minimax-ai/code"]),
+    ("qwen-code", &["@qwen-code/qwen-code"]),
 ];
